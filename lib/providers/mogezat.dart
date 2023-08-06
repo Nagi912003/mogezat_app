@@ -1,6 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 
 class Mogezat with ChangeNotifier {
+
+  Box box = Hive.box('box');
+
   final _items = [
     'assets/images/IMG-20230805-WA0006.jpg',
     'assets/images/IMG-20230805-WA0007.jpg',
@@ -99,4 +104,5 @@ class Mogezat with ChangeNotifier {
   ];
 
   get items => [..._items];
+
 }

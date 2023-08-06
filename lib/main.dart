@@ -1,11 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mogezat/providers/mogezat.dart';
 import 'package:provider/provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:mogezat/providers/mogezat.dart';
 
 import 'helpers/notification_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('box');
+
   runApp(const MyApp());
 }
 
@@ -46,6 +51,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   NotificationsServices notificationsServices = NotificationsServices();
+  final PageController _pageController = PageController(
+      initialPage: Hive.box('box').get('pageNum', defaultValue: 0));
 
   @override
   void initState() {
@@ -61,13 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
                   Colors.white,
-                  Colors.green,
+                  Colors.green.shade400,
                 ],
               ),
             ),
@@ -75,10 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
           SingleChildScrollView(
             child: Column(
               children: [
-                AppBar(
-                  backgroundColor: Colors.transparent,
-                  title: const Text('Flutter Demo Home Page'),
-                ),
+                myAppBar(),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 10,
                   height: MediaQuery.of(context).size.height - 200,
@@ -88,9 +92,36 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(onPressed: () {}, child: Text('Button 1')),
-                    ElevatedButton(onPressed: () {}, child: Text('Button 3')),
-                    ElevatedButton(onPressed: () {}, child: Text('Button 4')),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          side: BorderSide(
+                            width: 1.0,
+                            color: Colors.red.shade700,
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          'مشاركة',
+                          style: TextStyle(
+                            fontFamily: 'AeCortoba-wPVz',
+                            color: Colors.red.shade700,
+                          ),
+                        )),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          side: BorderSide(
+                            width: 1.0,
+                            color: Colors.red.shade700,
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          'أذكار الصباح و المساء',
+                          style: TextStyle(
+                            fontFamily: 'AeCortoba-wPVz',
+                            color: Colors.red.shade700,
+                          ),
+                        )),
                   ],
                 )
               ],
@@ -98,19 +129,30 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        child: const Icon(Icons.navigation),
+      drawer: Drawer(
+        child: ListView.builder(
+          itemCount: 18,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text('الصفحة لقم: ${(index + 1) * 5}'),
+              onTap: () {
+                _pageController.jumpToPage(((index + 1) * 5) - 1);
+                Navigator.pop(context);
+                Hive.box('box').put('pageNum', ((index + 1) * 5) - 1);
+              },
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget pageViewWidget(List items) {
     return PageView.builder(
-      controller: PageController(
-        initialPage: 0,
-      ),
+      onPageChanged: (value) {
+        Hive.box('box').put('pageNum', value);
+      },
+      controller: _pageController,
       scrollDirection: Axis.horizontal,
       reverse: true,
       itemCount: items.length,
@@ -146,6 +188,31 @@ class _MyHomePageState extends State<MyHomePage> {
         image,
         fit: BoxFit.fitWidth,
       ),
+    );
+  }
+
+  Widget myAppBar() {
+    return AppBar(
+      title: IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.share,
+            color: Colors.red.shade700,
+          )),
+      titleSpacing: 0,
+      actions: [
+        Text(
+          'لمحـــة',
+          style: TextStyle(
+            fontSize: 30,
+            fontFamily: 'AeCortoba-wPVz',
+            color: Colors.red.shade700,
+          ),
+        ),
+        const SizedBox(
+          width: 20,
+        )
+      ],
     );
   }
 }
