@@ -1,10 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:mogezat/providers/mogezat.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'helpers/notification_service.dart';
+import 'widgets/myAppBar.dart';
+import 'widgets/myBackGround.dart';
+import 'widgets/myButton.dart';
+import 'widgets/myDrawer.dart';
+import 'widgets/pageViewWidget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   NotificationsServices notificationsServices = NotificationsServices();
   final PageController _pageController = PageController(
       initialPage: Hive.box('box').get('pageNum', defaultValue: 0));
+  final ScreenshotController screenshotController = ScreenshotController();
 
   @override
   void initState() {
@@ -60,68 +71,56 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  void sharePage(String image) async {
+    var takenWidget = Image.asset(image);
+    await screenshotController
+        .captureFromWidget(
+      // pixelRatio: pixelRatio,
+      InheritedTheme.captureAll(context, Material(child: takenWidget)),
+      // delay: const Duration(seconds: 1),
+    )
+        .then((image) async {
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File('${directory.path}/image.png').create();
+      await imagePath.writeAsBytes(image);
+
+      /// Share Plugin
+      await Share.shareFiles([imagePath.path], text: '#لمحــة \n #صل_على_محمد');
+      // ShowCapturedWidget(context, image);
+    });
+  }
+
+  void shareAppLink() async {
+    await Share.share(
+        'لمحــة\n\nhttps://play.google.com/store/apps/details?id=com.prof_nagi.ahadith');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.white,
-                  Colors.green.shade400,
-                ],
-              ),
-            ),
-          ),
+          myBackGround(context),
           SingleChildScrollView(
             child: Column(
               children: [
-                myAppBar(),
+                myAppBar(shareAppLink),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 10,
                   height: MediaQuery.of(context).size.height - 200,
-                  child: pageViewWidget(Provider.of<Mogezat>(context)
-                      .items), //Image.asset('assets/images/IMG-20230805-WA0009.jpg', fit: BoxFit.fitWidth,),
+                  child: pageViewWidget(Provider.of<Mogezat>(context).items,
+                      _pageController), //Image.asset('assets/images/IMG-20230805-WA0009.jpg', fit: BoxFit.fitWidth,),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          side: BorderSide(
-                            width: 1.0,
-                            color: Colors.red.shade700,
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          'مشاركة',
-                          style: TextStyle(
-                            fontFamily: 'AeCortoba-wPVz',
-                            color: Colors.red.shade700,
-                          ),
-                        )),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          side: BorderSide(
-                            width: 1.0,
-                            color: Colors.red.shade700,
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          'أذكار الصباح و المساء',
-                          style: TextStyle(
-                            fontFamily: 'AeCortoba-wPVz',
-                            color: Colors.red.shade700,
-                          ),
-                        )),
+                    myButton('مشاركة', () {
+                      sharePage(Provider.of<Mogezat>(context, listen: false)
+                          .items[_pageController.page!.toInt()]);
+                    }),
+                    myButton('أذكار الصباح و المساء', () {
+
+                    }),
                   ],
                 )
               ],
@@ -129,90 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView.builder(
-          itemCount: 18,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text('الصفحة لقم: ${(index + 1) * 5}'),
-              onTap: () {
-                _pageController.jumpToPage(((index + 1) * 5) - 1);
-                Navigator.pop(context);
-                Hive.box('box').put('pageNum', ((index + 1) * 5) - 1);
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget pageViewWidget(List items) {
-    return PageView.builder(
-      onPageChanged: (value) {
-        Hive.box('box').put('pageNum', value);
-      },
-      controller: _pageController,
-      scrollDirection: Axis.horizontal,
-      reverse: true,
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        return Stack(
-          children: [
-            myGradientWidget(items[index], index, items.length),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Text('الصفحة رقم: ${index + 1}'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget myGradientWidget(String image, int index, int length) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.white,
-            Colors.green.shade300,
-          ],
-        ),
-      ),
-      child: Image.asset(
-        image,
-        fit: BoxFit.fitWidth,
-      ),
-    );
-  }
-
-  Widget myAppBar() {
-    return AppBar(
-      title: IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.share,
-            color: Colors.red.shade700,
-          )),
-      titleSpacing: 0,
-      actions: [
-        Text(
-          'لمحـــة',
-          style: TextStyle(
-            fontSize: 30,
-            fontFamily: 'AeCortoba-wPVz',
-            color: Colors.red.shade700,
-          ),
-        ),
-        const SizedBox(
-          width: 20,
-        )
-      ],
+      drawer: myDrawer(_pageController),
     );
   }
 }
