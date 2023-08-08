@@ -1,4 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter_native_timezone_updated_gradle/flutter_native_timezone.dart';
 
 class NotificationsServices {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
@@ -13,10 +16,10 @@ class NotificationsServices {
     );
 
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    scheduleDailyNotifications('لمحة', 'معجزة كل يوم', 7, 17);
   }
 
   void sendNotification(String title, String body) async{
-
     AndroidNotificationDetails androidNotificationDetails =
         const AndroidNotificationDetails(
       'channel_id',
@@ -24,6 +27,7 @@ class NotificationsServices {
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
+      sound: RawResourceAndroidNotificationSound('birds_notification'),
       icon: 'logo',
     );
 
@@ -55,8 +59,53 @@ class NotificationsServices {
       android: androidNotificationDetails,
     );
 
-    await _flutterLocalNotificationsPlugin.periodicallyShow(0, title, body, RepeatInterval.hourly
+    await _flutterLocalNotificationsPlugin.periodicallyShow(0, title, body, RepeatInterval.daily
         , notificationDetails);
+  }
+
+  void scheduleDailyNotifications(String title, String body, int firstHour, int secondHour) async {
+    // Initialize the timezone library
+    tz.initializeTimeZones();
+
+    // Get the local timezone
+    tz.Location local = tz.getLocation(await FlutterNativeTimezone.getLocalTimezone());
+
+    // Calculate the time for the notifications
+    tz.TZDateTime now = tz.TZDateTime.now(local);
+    tz.TZDateTime scheduledTimeMorning = tz.TZDateTime(local, now.year, now.month, now.day, firstHour, 58);
+    tz.TZDateTime scheduledTimeEvening = tz.TZDateTime(local, now.year, now.month, now.day, secondHour, 58);
+
+    // Schedule the notifications
+    AndroidNotificationDetails androidNotificationDetails =
+    const AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      icon: 'logo',
+      // sound: RawResourceAndroidNotificationSound('notification'),
+    );
+
+    NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+    );
+
+    await _flutterLocalNotificationsPlugin.zonedSchedule(
+      0, title, body, scheduledTimeMorning, notificationDetails,
+      uiLocalNotificationDateInterpretation:
+      UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+
+    await _flutterLocalNotificationsPlugin.zonedSchedule(
+      1, title, body, scheduledTimeEvening, notificationDetails,
+      uiLocalNotificationDateInterpretation:
+      UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
   }
 
   void stopNotification() async{

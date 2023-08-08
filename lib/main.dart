@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -8,20 +10,38 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mogezat/providers/mogezat.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'helpers/notification_service.dart';
-import 'widgets/myAppBar.dart';
-import 'widgets/myBackGround.dart';
-import 'widgets/myButton.dart';
-import 'widgets/myDrawer.dart';
-import 'widgets/pageViewWidget.dart';
+import 'screens/azkar_screen.dart';
+import 'widgets/home_screen/myAppBar.dart';
+import 'widgets/home_screen/myBackGround.dart';
+import 'widgets/home_screen/myButton.dart';
+import 'widgets/home_screen/myDrawer.dart';
+import 'widgets/home_screen/pageViewWidget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('box');
 
+  // Initialize FlutterLocalNotificationsPlugin
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  // Request notification permission
+  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+
+
+  tz.initializeTimeZones();
   runApp(const MyApp());
+
+  SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+    ],
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -98,31 +118,35 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: myAppBar('لمحـــة',shareAppLink),
       body: Stack(
         children: [
           myBackGround(context),
-          SingleChildScrollView(
-            child: Column(
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width - 10,
+              height: MediaQuery.of(context).size.height - 200,
+              child: pageViewWidget(Provider.of<Mogezat>(context).items,
+                  _pageController), //Image.asset('assets/images/IMG-20230805-WA0009.jpg', fit: BoxFit.fitWidth,),
+            ),
+          ),
+          Positioned(
+            bottom:20,
+            width: MediaQuery.sizeOf(context).width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                myAppBar(shareAppLink),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 10,
-                  height: MediaQuery.of(context).size.height - 200,
-                  child: pageViewWidget(Provider.of<Mogezat>(context).items,
-                      _pageController), //Image.asset('assets/images/IMG-20230805-WA0009.jpg', fit: BoxFit.fitWidth,),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    myButton('مشاركة', () {
-                      sharePage(Provider.of<Mogezat>(context, listen: false)
-                          .items[_pageController.page!.toInt()]);
-                    }),
-                    myButton('أذكار الصباح و المساء', () {
-
-                    }),
-                  ],
-                )
+                myButton('مشاركة', () {
+                  sharePage(Provider.of<Mogezat>(context, listen: false)
+                      .items[_pageController.page!.toInt()]);
+                }),
+                myButton('أذكار الصباح و المساء', () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AzkarScreen()));
+                }),
+                // myButton('show notification', () {
+                //   notificationsServices.sendNotification('title', 'body');
+                // }),
               ],
             ),
           ),

@@ -6,14 +6,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 Widget myDrawer(PageController _pageController) {
   return Drawer(
     child: ListView.builder(
-      itemCount: 18,
+      itemCount: 94,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text('الصفحة رقم: ${(index + 1) * 5}'),
+          trailing: Text('الصفحة رقم: ${(index + 1)}', style: TextStyle(fontSize: 20),),
           onTap: () {
-            _pageController.jumpToPage(((index + 1) * 5) - 1);
+            _pageController.jumpToPage((index));
             Navigator.pop(context);
-            Hive.box('box').put('pageNum', ((index + 1) * 5) - 1);
+            Hive.box('box').put('pageNum', index);
           },
         );
       },

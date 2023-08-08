@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
-Widget myAppBar(onPressed) {
+AppBar myAppBar(title,onPressed) {
   return AppBar(
-    title: IconButton(
+    backgroundColor: Colors.transparent,
+    title: onPressed!=null? IconButton(
         onPressed: onPressed,
         icon: Icon(
           Icons.share,
-          color: Colors.red.shade700,
-        )),
+          color: Colors.green.shade700,
+        )): null,
     titleSpacing: 0,
     actions: [
       Text(
-        'لمحـــة',
+        title,
         style: TextStyle(
-          fontSize: 30,
+          fontSize: 35,
           fontFamily: 'AeCortoba-wPVz',
-          color: Colors.red.shade700,
+          color: Colors.green.shade700,
         ),
       ),
       const SizedBox(

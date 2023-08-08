@@ -17,7 +17,8 @@ Widget myGradientWidget(BuildContext context,String image, int index, int length
     ),
     child: Image.asset(
       image,
-      fit: BoxFit.fitWidth,
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.high,
     ),
   );
 }
