@@ -9,7 +9,7 @@ Widget AzkarHolder(context,String title,List azkar){
     expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
+        height: MediaQuery.of(context).size.height * 0.5,
         child: ListView(
           shrinkWrap: true,
           // physics: const NeverScrollableScrollPhysics(),

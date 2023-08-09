@@ -17,7 +17,6 @@ import 'screens/azkar_screen.dart';
 import 'widgets/home_screen/myAppBar.dart';
 import 'widgets/home_screen/myBackGround.dart';
 import 'widgets/home_screen/myButton.dart';
-import 'widgets/home_screen/myDrawer.dart';
 import 'widgets/home_screen/pageViewWidget.dart';
 
 void main() async {
@@ -112,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void shareAppLink() async {
     await Share.share(
-        'لمحــة\n\nhttps://play.google.com/store/apps/details?id=com.prof_nagi.ahadith');
+        'لمحــة\n\nhttps://play.google.com/store/apps/details?id=com.prof_nagi.lam7ah');
   }
 
   @override
@@ -128,31 +127,28 @@ class _MyHomePageState extends State<MyHomePage> {
               width: MediaQuery.of(context).size.width - 10,
               height: MediaQuery.of(context).size.height - 200,
               child: pageViewWidget(Provider.of<Mogezat>(context).items,
-                  _pageController), //Image.asset('assets/images/IMG-20230805-WA0009.jpg', fit: BoxFit.fitWidth,),
+                  _pageController),
             ),
           ),
           Positioned(
             bottom:20,
-            width: MediaQuery.sizeOf(context).width,
+            width: MediaQuery.sizeOf(context).width ,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 myButton('مشاركة', () {
                   sharePage(Provider.of<Mogezat>(context, listen: false)
                       .items[_pageController.page!.toInt()]);
-                }),
-                myButton('أذكار الصباح و المساء', () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AzkarScreen()));
-                }),
-                // myButton('show notification', () {
-                //   notificationsServices.sendNotification('title', 'body');
-                // }),
+                }, context),
+                // myButton('أذكار الصباح و المساء', () {
+                //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AzkarScreen()));
+                // }, context),
               ],
             ),
           ),
         ],
       ),
-      drawer: myDrawer(_pageController),
+      // drawer: myDrawer(_pageController),
     );
   }
 }

@@ -17,15 +17,7 @@ Widget pageViewWidget(List items, PageController? controller) {
     itemBuilder: (context, index) {
       return Container(
         margin: const EdgeInsets.all(7),
-        child: Stack(
-          children: [
-            myGradientWidget(context,items[index], index, items.length),
-            Align(
-              alignment: const Alignment(0, -0.95),
-              child: Text('الصفحة رقم: ${index + 1}'),
-            ),
-          ],
-        ),
+        child: myGradientWidget(context,items[index], index, items.length),
       );
     },
   );

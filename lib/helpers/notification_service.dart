@@ -16,7 +16,7 @@ class NotificationsServices {
     );
 
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    scheduleDailyNotifications('لمحة', 'معجزة كل يوم', 7, 17);
+    scheduleDailyNotifications('معجزة كل يوم', 'لا تنسى أذكار الصباح و المساء', 7, 17);
   }
 
   void sendNotification(String title, String body) async{
@@ -24,6 +24,7 @@ class NotificationsServices {
         const AndroidNotificationDetails(
       'channel_id',
       'channel_name',
+
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,

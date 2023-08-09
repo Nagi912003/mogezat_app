@@ -9,7 +9,7 @@ AppBar myAppBar(title,onPressed) {
           Icons.share,
           color: Colors.green.shade700,
         )): null,
-    titleSpacing: 0,
+    titleSpacing: 10,
     actions: [
       Text(
         title,
