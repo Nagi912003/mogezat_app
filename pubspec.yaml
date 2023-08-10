@@ -45,6 +45,7 @@ dependencies:
   rxdart: ^0.27.7
   flutter_native_timezone_updated_gradle: ^2.0.3
   rename: ^2.1.1
+  flutter_screenutil: ^5.8.4
 
 dev_dependencies:
   flutter_test:

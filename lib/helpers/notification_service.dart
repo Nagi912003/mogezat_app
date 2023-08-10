@@ -85,6 +85,8 @@ class NotificationsServices {
       priority: Priority.high,
       playSound: true,
       icon: 'logo',
+      //android/app/src/main/res/raw/birds_notification.mp3
+      sound: RawResourceAndroidNotificationSound('birds_notification'),
       // sound: RawResourceAndroidNotificationSound('notification'),
     );
 

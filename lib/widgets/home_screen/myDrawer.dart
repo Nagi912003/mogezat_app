@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 Widget myDrawer(PageController _pageController) {
   return Drawer(
     child: ListView.builder(
-      itemCount: 94,
+      itemCount: 100,
       itemBuilder: (context, index) {
         return ListTile(
           trailing: Text('الصفحة رقم: ${(index + 1)}', style: TextStyle(fontSize: 20),),

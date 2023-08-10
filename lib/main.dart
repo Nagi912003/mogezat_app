@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:mogezat/widgets/home_screen/myDrawer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,8 +15,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'helpers/notification_service.dart';
-import 'screens/azkar_screen.dart';
-import 'widgets/home_screen/myAppBar.dart';
+// import 'screens/azkar_screen.dart';
+// import 'widgets/home_screen/myAppBar.dart';
 import 'widgets/home_screen/myBackGround.dart';
 import 'widgets/home_screen/myButton.dart';
 import 'widgets/home_screen/pageViewWidget.dart';
@@ -23,15 +25,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('box');
+  // Hive.box('box').clear();
 
   // Initialize FlutterLocalNotificationsPlugin
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   // Request notification permission
-  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
-
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestPermission();
 
   tz.initializeTimeZones();
   runApp(const MyApp());
@@ -50,23 +54,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => Mogezat(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          // brightness: Brightness.dark,
-          colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.green,
-            primaryColorDark: Colors.green[700],
-            accentColor: Colors.yellow[800],
-            backgroundColor: Colors.green[50],
-            cardColor: Colors.green[50],
-            errorColor: Colors.redAccent,
-            brightness: Brightness.light,
-          ),
-        ),
-        home: const MyHomePage(),
-      ),
+      child: ScreenUtilInit(
+          designSize: const Size(411.42857142857144, 914.2857142857143),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                useMaterial3: true,
+                // brightness: Brightness.dark,
+                colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: Colors.green,
+                  primaryColorDark: Colors.green[700],
+                  accentColor: Colors.yellow[800],
+                  backgroundColor: Colors.green[50],
+                  cardColor: Colors.green[50],
+                  errorColor: Colors.redAccent,
+                  brightness: Brightness.light,
+                ),
+              ),
+              home: const MyHomePage(),
+            );
+          }),
     );
   }
 }
@@ -117,33 +127,45 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar('لمحـــة',shareAppLink),
+      // appBar: myAppBar(' ', null),
       body: Stack(
         children: [
           myBackGround(context),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width - 10,
-              height: MediaQuery.of(context).size.height - 200,
-              child: pageViewWidget(Provider.of<Mogezat>(context).items,
-                  _pageController),
+              width: 1.sw,
+              height: 0.7.sh,
+              child: pageViewWidget(
+                  Provider.of<Mogezat>(context).items, _pageController),
             ),
           ),
           Positioned(
-            bottom:20,
-            width: MediaQuery.sizeOf(context).width ,
+            bottom: 20.h,
+            width: MediaQuery.sizeOf(context).width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                myButton('مشاركة', () {
+                myButton('مشاركة الصورة', () {
                   sharePage(Provider.of<Mogezat>(context, listen: false)
                       .items[_pageController.page!.toInt()]);
                 }, context),
-                // myButton('أذكار الصباح و المساء', () {
-                //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AzkarScreen()));
-                // }, context),
+                myButton('مشاركة التطبيق', () {
+                  shareAppLink();
+                }, context),
               ],
+            ),
+          ),
+          Positioned(
+            top: 25.h,
+            right: 20.w,
+            child: Text(
+              'لمحـــة',
+              style: TextStyle(
+                fontSize: 35.sp  / MediaQuery.textScaleFactorOf(context),
+                fontFamily: 'AeCortoba-wPVz',
+                color: Colors.green.shade700,
+              ),
             ),
           ),
         ],
@@ -152,3 +174,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+

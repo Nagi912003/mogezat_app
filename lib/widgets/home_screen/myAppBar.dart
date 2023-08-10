@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 AppBar myAppBar(title,onPressed) {
   return AppBar(
@@ -14,7 +15,7 @@ AppBar myAppBar(title,onPressed) {
       Text(
         title,
         style: TextStyle(
-          fontSize: 35,
+          fontSize: 35.sp,
           fontFamily: 'AeCortoba-wPVz',
           color: Colors.green.shade700,
         ),

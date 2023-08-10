@@ -7,12 +7,14 @@ class Mogezat with ChangeNotifier {
   Box box = Hive.box('box');
 
   final _items = [
-    'assets/images/Screenshot_20230809_223739_Gallery.jpg',
-    'assets/images/Screenshot_20230809_223744_Gallery.jpg',
-    'assets/images/Screenshot_20230809_223748_Gallery.jpg',
+    'assets/images/IMG-20230805-WA0001.jpg',
+    'assets/images/IMG-20230805-WA0002.jpg',
+    'assets/images/IMG-20230805-WA0003.jpg',
+    'assets/images/IMG-20230805-WA0004.jpg',
     'assets/images/IMG-20230805-WA0006.jpg',
     'assets/images/IMG-20230805-WA0007.jpg',
     'assets/images/IMG-20230805-WA0008.jpg',
+    'assets/images/IMG-20230805-WA0009.jpg',
     'assets/images/IMG-20230805-WA0010.jpg',
     'assets/images/IMG-20230805-WA0011.jpg',
     'assets/images/IMG-20230805-WA0012.jpg',
@@ -40,7 +42,6 @@ class Mogezat with ChangeNotifier {
     'assets/images/IMG-20230805-WA0034.jpg',
     'assets/images/IMG-20230805-WA0035.jpg',
     'assets/images/IMG-20230805-WA0036.jpg',
-    'assets/images/IMG-20230805-WA0037.jpg',
     'assets/images/IMG-20230805-WA0038.jpg',
     'assets/images/IMG-20230805-WA0039.jpg',
     'assets/images/IMG-20230805-WA0040.jpg',
@@ -104,6 +105,8 @@ class Mogezat with ChangeNotifier {
     'assets/images/IMG-20230805-WA0098.jpg',
     'assets/images/IMG-20230805-WA0099.jpg',
     'assets/images/IMG-20230805-WA0100.jpg',
+    'assets/images/IMG-20230805-WA0102.jpg',
+    'assets/images/IMG-20230805-WA0104.jpg',
   ];
 
   final List<String> _azkarMorning = [

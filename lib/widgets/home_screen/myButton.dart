@@ -1,12 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget myButton(title, onPressed, BuildContext context){
   return MaterialButton(
       onPressed: onPressed,
       child: Container(
-        height: MediaQuery.sizeOf(context).height * 0.07,
-        width: MediaQuery.sizeOf(context).width * 0.5,
+        height: 0.07.sh,
+        width: 0.35.sw,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
@@ -18,6 +19,7 @@ Widget myButton(title, onPressed, BuildContext context){
             style: TextStyle(
               fontFamily: 'AeCortoba-wPVz',
               color: Colors.green.shade700,
+              fontSize: 15.sp  / MediaQuery.textScaleFactorOf(context),
             ),
           ),
         ),
