@@ -25,7 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('box');
-  // Hive.box('box').clear();
+  Hive.box('box').clear();
 
   // Initialize FlutterLocalNotificationsPlugin
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -146,12 +146,27 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                myButton('مشاركة الصورة', () {
-                  sharePage(Provider.of<Mogezat>(context, listen: false)
-                      .items[_pageController.page!.toInt()]);
-                }, context),
                 myButton('مشاركة التطبيق', () {
                   shareAppLink();
+                  notificationsServices.sendNotification('title', 'body');
+                }, context),
+                myButton('مشاركة الصورة', () {
+                  int pageNum = _pageController.page!.toInt();
+                  if(pageNum >= 100){
+                    pageNum -= 100;
+                  }
+                  if(pageNum >= 200){
+                    pageNum -= 200;
+                  }
+                  if (pageNum >= 300){
+                    pageNum -= 300;
+                  }
+                  if (pageNum < 0){
+                    pageNum += 100;
+                  }
+
+                  sharePage(Provider.of<Mogezat>(context, listen: false)
+                      .items[pageNum]);
                 }, context),
               ],
             ),

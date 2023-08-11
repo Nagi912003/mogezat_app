@@ -16,7 +16,7 @@ class NotificationsServices {
     );
 
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    scheduleDailyNotifications('معجزة كل يوم', 'لا تنسى أذكار الصباح و المساء', 7, 17);
+    scheduleDailyNotifications('معجزة كل يوم', 'لا تنسى أذكار الصباح و المساء', 8, 18);
   }
 
   void sendNotification(String title, String body) async{
@@ -29,7 +29,7 @@ class NotificationsServices {
       priority: Priority.high,
       playSound: true,
       sound: RawResourceAndroidNotificationSound('birds_notification'),
-      icon: 'logo',
+      // icon: 'logo',
     );
 
     NotificationDetails notificationDetails = NotificationDetails(
@@ -73,8 +73,8 @@ class NotificationsServices {
 
     // Calculate the time for the notifications
     tz.TZDateTime now = tz.TZDateTime.now(local);
-    tz.TZDateTime scheduledTimeMorning = tz.TZDateTime(local, now.year, now.month, now.day, firstHour, 58);
-    tz.TZDateTime scheduledTimeEvening = tz.TZDateTime(local, now.year, now.month, now.day, secondHour, 58);
+    tz.TZDateTime scheduledTimeMorning = tz.TZDateTime(local, now.year, now.month, now.day, firstHour);
+    tz.TZDateTime scheduledTimeEvening = tz.TZDateTime(local, now.year, now.month, now.day, secondHour);
 
     // Schedule the notifications
     AndroidNotificationDetails androidNotificationDetails =
