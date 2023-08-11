@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:mogezat/widgets/home_screen/myDrawer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,8 +14,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'helpers/notification_service.dart';
-// import 'screens/azkar_screen.dart';
-// import 'widgets/home_screen/myAppBar.dart';
 import 'widgets/home_screen/myBackGround.dart';
 import 'widgets/home_screen/myButton.dart';
 import 'widgets/home_screen/pageViewWidget.dart';
@@ -25,7 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('box');
-  Hive.box('box').clear();
+  // Hive.box('box').clear();
 
   // Initialize FlutterLocalNotificationsPlugin
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -148,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 myButton('مشاركة التطبيق', () {
                   shareAppLink();
-                  notificationsServices.sendNotification('title', 'body');
+                  // notificationsServices.sendNotification('title', 'body');
                 }, context),
                 myButton('مشاركة الصورة', () {
                   int pageNum = _pageController.page!.toInt();
