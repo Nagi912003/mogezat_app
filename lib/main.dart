@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mogezat/screens/langs_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
     await Share.share(
         'لمحــة\n\nhttps://play.google.com/store/apps/details?id=com.prof_nagi.lam7ah');
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 1.sw,
               height: 0.7.sh,
               child: pageViewWidget(
-                  Provider.of<Mogezat>(context).items, _pageController),
+                  Provider.of<Mogezat>(context).getItems(''), _pageController),
             ),
           ),
           Positioned(
@@ -178,6 +179,42 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontFamily: 'AeCortoba-wPVz',
                 color: Colors.green.shade700,
               ),
+            ),
+          ),
+          Positioned(
+            top: 25.h,
+            right: 140.w,
+            child: DropdownButton(
+              icon: const Icon(
+                Icons.language,
+                color: Colors.green,
+              ),
+              iconSize: 40.sp,
+              underline: Container(),
+              onChanged: (String? value) {
+                if (value == 'العربية') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LangsScreen(),
+                    ),
+                  );
+                }
+              },
+              items: <String>['العربية', 'English']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'AeCortoba-wPVz',
+                      color: Colors.green,
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         ],
