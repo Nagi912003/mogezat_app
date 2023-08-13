@@ -5,6 +5,12 @@ import 'package:hive/hive.dart';
 class Mogezat with ChangeNotifier {
 
   Box box = Hive.box('box');
+  String type = '';
+
+  void setType(String type){
+    this.type = type;
+    notifyListeners();
+  }
 
   final _items = [
     'assets/images/IMG-20230805-WA0001.jpg',
@@ -111,7 +117,7 @@ class Mogezat with ChangeNotifier {
 
   get items => [..._items];
 
-  List getItems (String type){
+  List getItems (){
     if(type == 'ar_en'){
       return ar_en;
     }
@@ -136,7 +142,7 @@ class Mogezat with ChangeNotifier {
     if(type == 'russian'){
       return russian;
     }
-    if(type == 'tagalog'){
+    if(type == 'filipino'){
       return tagalog;
     }
     if(type == 'turkish'){
@@ -144,6 +150,59 @@ class Mogezat with ChangeNotifier {
     }
     return [..._items];
   }
+
+  String getAppName() {
+    Map<String, String> appNames = {
+      'العربية': 'لمحـــة',
+      'ar_en': 'Lamha',
+      'chinese': 'Lánhù',
+      'english': 'Lamha',
+      'french': 'Lamha',
+      'german': 'Lamha',
+      'italy': 'Lamha',
+      'indonesian': 'Lamha',
+      'russian': 'Lamha',
+      'filipino': 'Lamha',
+      'turkish': 'Lamha',
+    };
+
+    return appNames[type] ?? 'لمحـــة';
+  }
+  String getSharePhotoButtonTitle() {
+    Map<String, String> buttonTitles = {
+      'العربية': 'مشاركة الصورة',
+      'ar_en': 'Share the photo',
+      'chinese': '分享照片',
+      'english': 'Share the photo',
+      'french': 'Partagez la photo',
+      'german': 'Teilen Sie das Foto',
+      'italy': 'Condividi la foto',
+      'indonesian': 'Bagikan fotonya',
+      'russian': 'Поделитесь фото',
+      'filipino': 'Ibahagi ang larawan',
+      'turkish': 'fotoğrafı paylaş',
+    };
+
+    return buttonTitles[type] ?? 'مشاركة الصورة';
+  }
+  String getShareAppButtonTitle() {
+    Map<String, String> buttonTitles = {
+      'العربية': 'مشاركة التطبيق',
+      'ar_en': 'Share the app',
+      'chinese': '分享应用程序',
+      'english': 'Share the app',
+      'french': 'Partager l\'application',
+      'german': 'Teilen Sie die App',
+      'italy': 'Condividi l\'app',
+      'indonesian': 'Bagikan aplikasi',
+      'russian': 'Поделитесь приложением',
+      'filipino': 'Ibahagi ang app',
+      'turkish': 'uygulamayı paylaş',
+    };
+
+    return buttonTitles[type] ?? 'مشاركة التطبيق';
+  }
+
 
   final ar_en = [
     'assets/images/the_10_langs/ar_en/ar_en_1.jpg',

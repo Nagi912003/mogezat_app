@@ -74,6 +74,16 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/the_10_langs/ar_en/
+    - assets/images/the_10_langs/chinese/
+    - assets/images/the_10_langs/english/
+    - assets/images/the_10_langs/french/
+    - assets/images/the_10_langs/german/
+    - assets/images/the_10_langs/indonesian/
+    - assets/images/the_10_langs/italy/
+    - assets/images/the_10_langs/russian/
+    - assets/images/the_10_langs/tagalog/
+    - assets/images/the_10_langs/turkish/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

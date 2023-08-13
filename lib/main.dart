@@ -121,9 +121,10 @@ class _MyHomePageState extends State<MyHomePage> {
     await Share.share(
         'لمحــة\n\nhttps://play.google.com/store/apps/details?id=com.prof_nagi.lam7ah');
   }
-  
+
   @override
   Widget build(BuildContext context) {
+    final mogezatData = Provider.of<Mogezat>(context, listen: false);
     return Scaffold(
       // appBar: myAppBar(' ', null),
       body: Stack(
@@ -135,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 1.sw,
               height: 0.7.sh,
               child: pageViewWidget(
-                  Provider.of<Mogezat>(context).getItems(''), _pageController),
+                  Provider.of<Mogezat>(context).getItems(), _pageController),
             ),
           ),
           Positioned(
@@ -144,77 +145,102 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                myButton('مشاركة التطبيق', () {
+                myButton(mogezatData.getShareAppButtonTitle(), () {
                   shareAppLink();
                   // notificationsServices.sendNotification('title', 'body');
                 }, context),
-                myButton('مشاركة الصورة', () {
+                myButton(mogezatData.getSharePhotoButtonTitle(), () {
                   int pageNum = _pageController.page!.toInt();
-                  if(pageNum >= 100){
+                  if (pageNum >= 100) {
                     pageNum -= 100;
                   }
-                  if(pageNum >= 200){
+                  if (pageNum >= 200) {
                     pageNum -= 200;
                   }
-                  if (pageNum >= 300){
+                  if (pageNum >= 300) {
                     pageNum -= 300;
                   }
-                  if (pageNum < 0){
+                  if (pageNum < 0) {
                     pageNum += 100;
                   }
 
+                  while (Provider.of<Mogezat>(context, listen: false)
+                          .getItems()
+                          .length <
+                      pageNum) {
+                    pageNum -= Provider.of<Mogezat>(context, listen: false)
+                        .getItems()
+                        .length;
+                  }
+
                   sharePage(Provider.of<Mogezat>(context, listen: false)
-                      .items[pageNum]);
+                      .getItems()[pageNum]);
                 }, context),
               ],
             ),
           ),
           Positioned(
             top: 25.h,
-            right: 20.w,
-            child: Text(
-              'لمحـــة',
-              style: TextStyle(
-                fontSize: 35.sp  / MediaQuery.textScaleFactorOf(context),
-                fontFamily: 'AeCortoba-wPVz',
-                color: Colors.green.shade700,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 25.h,
-            right: 140.w,
-            child: DropdownButton(
-              icon: const Icon(
-                Icons.language,
-                color: Colors.green,
-              ),
-              iconSize: 40.sp,
-              underline: Container(),
-              onChanged: (String? value) {
-                if (value == 'العربية') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LangsScreen(),
-                    ),
-                  );
-                }
-              },
-              items: <String>['العربية', 'English']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: const TextStyle(
-                      fontSize: 20,
+            child: Container(
+              // color: Colors.red,
+              width: MediaQuery.sizeOf(context).width,
+              child: Row(
+                // mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    mogezatData.getAppName(),
+                    style: TextStyle(
+                      fontSize: 35.sp / MediaQuery.textScaleFactorOf(context),
                       fontFamily: 'AeCortoba-wPVz',
-                      color: Colors.green,
+                      color: Colors.green.shade700,
                     ),
                   ),
-                );
-              }).toList(),
+                  SizedBox(
+                    width: 110.w,
+                  ),
+                  DropdownButton(
+                    icon: const Icon(
+                      Icons.language,
+                      color: Colors.green,
+                    ),
+                    iconSize: 40.sp,
+                    underline: Container(),
+                    onChanged: (String? value) {
+                      mogezatData.setType(value!);
+                    },
+                    items: <String>[
+                      'العربية',
+                      'ar_en',
+                      'chinese',
+                      'english',
+                      'french',
+                      'german',
+                      'italy',
+                      'indonesian',
+                      'russian',
+                      'filipino',
+                      'turkish'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'AeCortoba-wPVz',
+                            color: Colors.green,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+
+                  const SizedBox(
+                    width: 25,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -223,5 +249,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
