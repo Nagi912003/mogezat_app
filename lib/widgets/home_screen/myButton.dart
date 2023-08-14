@@ -18,7 +18,7 @@ Widget myButton(title, onPressed, BuildContext context){
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'AeCortoba-wPVz',
-              color: Colors.green.shade700,
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 15.sp  / MediaQuery.textScaleFactorOf(context),
             ),
           ),

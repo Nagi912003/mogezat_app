@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mogezat/screens/langs_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -130,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           myBackGround(context),
+          //the main page view
           Align(
             alignment: Alignment.center,
             child: SizedBox(
@@ -139,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Provider.of<Mogezat>(context).getItems(), _pageController),
             ),
           ),
+          //the bottom buttons
           Positioned(
             bottom: 20.h,
             width: MediaQuery.sizeOf(context).width,
@@ -179,70 +180,88 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+          //the top bar app name
           Positioned(
-            top: 25.h,
-            child: Container(
-              // color: Colors.red,
-              width: MediaQuery.sizeOf(context).width,
-              child: Row(
-                // mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    mogezatData.getAppName(),
-                    style: TextStyle(
-                      fontSize: 35.sp / MediaQuery.textScaleFactorOf(context),
-                      fontFamily: 'AeCortoba-wPVz',
-                      color: Colors.green.shade700,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 110.w,
-                  ),
-                  DropdownButton(
-                    icon: const Icon(
-                      Icons.language,
-                      color: Colors.green,
-                    ),
-                    iconSize: 40.sp,
-                    underline: Container(),
-                    onChanged: (String? value) {
-                      mogezatData.setType(value!);
-                    },
-                    items: <String>[
-                      'العربية',
-                      'ar_en',
-                      'chinese',
-                      'english',
-                      'french',
-                      'german',
-                      'italy',
-                      'indonesian',
-                      'russian',
-                      'filipino',
-                      'turkish'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'AeCortoba-wPVz',
-                            color: Colors.green,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-
-                  const SizedBox(
-                    width: 25,
-                  ),
-                ],
+            top: 30.h,
+            left: 20.w,
+            child: Text(
+              mogezatData.getAppName(),
+              style: TextStyle(
+                fontSize: 35.sp / MediaQuery.textScaleFactorOf(context),
+                fontFamily: 'AeCortoba-wPVz',
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),
+          //the top bar languages button
+          Positioned(
+            top: 30.h,
+            right: 20.w,
+            child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButton(
+                icon: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      mogezatData.getLangsButtonTitle(),
+                      style: TextStyle(
+                        fontSize: mogezatData.getLangsButtonTitle() ==
+                            'languages'
+                            ? 20.sp /
+                            MediaQuery.textScaleFactorOf(context)
+                            : 30.sp /
+                            MediaQuery.textScaleFactorOf(context),
+                        fontFamily: 'AeCortoba-wPVz',
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Icon(
+                      Icons.language,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ],
+                ),
+                iconSize: 40.sp,
+                underline: Container(),
+                onChanged: (String? value) {
+                  mogezatData.setType(value!);
+                },
+                items: <String>[
+                  'العربيــة',
+                  'English  عربي',
+                  'chinese',
+                  'english',
+                  'french',
+                  'german',
+                  'italy',
+                  'indonesian',
+                  'russian',
+                  'filipino',
+                  'turkish'
+                ].map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: SizedBox(
+                      // width: 100.w,
+                      child: Text(
+                        value,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'AeCortoba-wPVz',
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),),
         ],
       ),
       // drawer: myDrawer(_pageController),

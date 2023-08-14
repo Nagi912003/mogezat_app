@@ -9,6 +9,7 @@ class Mogezat with ChangeNotifier {
 
   void setType(String type){
     this.type = type;
+    box.put('type', type);
     notifyListeners();
   }
 
@@ -118,7 +119,8 @@ class Mogezat with ChangeNotifier {
   get items => [..._items];
 
   List getItems (){
-    if(type == 'ar_en'){
+    type = box.get('type', defaultValue: '');
+    if(type == 'English  عربي'){
       return ar_en;
     }
     if(type == 'chinese'){
@@ -154,7 +156,7 @@ class Mogezat with ChangeNotifier {
   String getAppName() {
     Map<String, String> appNames = {
       'العربية': 'لمحـــة',
-      'ar_en': 'Lamha',
+      'English  عربي': 'Lamha',
       'chinese': 'Lánhù',
       'english': 'Lamha',
       'french': 'Lamha',
@@ -168,10 +170,29 @@ class Mogezat with ChangeNotifier {
 
     return appNames[type] ?? 'لمحـــة';
   }
+  String getLangsButtonTitle() {
+    Map<String, String> appNames = {
+      'العربية': 'لغات',
+      'English  عربي': 'languages',
+      'chinese': 'languages',
+      'english': 'languages',
+      'french': 'languages',
+      'german': 'languages',
+      'italy': 'languages',
+      'indonesian': 'languages',
+      'russian': 'languages',
+      'filipino': 'languages',
+      'turkish': 'languages',
+    };
+
+    return appNames[type] ?? 'لغات';
+  }
+
+
   String getSharePhotoButtonTitle() {
     Map<String, String> buttonTitles = {
       'العربية': 'مشاركة الصورة',
-      'ar_en': 'Share the photo',
+      'English  عربي': 'Share the photo',
       'chinese': '分享照片',
       'english': 'Share the photo',
       'french': 'Partagez la photo',
@@ -188,7 +209,7 @@ class Mogezat with ChangeNotifier {
   String getShareAppButtonTitle() {
     Map<String, String> buttonTitles = {
       'العربية': 'مشاركة التطبيق',
-      'ar_en': 'Share the app',
+      'English  عربي': 'Share the app',
       'chinese': '分享应用程序',
       'english': 'Share the app',
       'french': 'Partager l\'application',
