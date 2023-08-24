@@ -183,14 +183,34 @@ class _MyHomePageState extends State<MyHomePage> {
           //the top bar app name
           Positioned(
             top: 30.h,
-            left: 20.w,
-            child: Text(
-              mogezatData.getAppName(),
-              style: TextStyle(
-                fontSize: 35.sp / MediaQuery.textScaleFactorOf(context),
-                fontFamily: 'AeCortoba-wPVz',
-                color: Theme.of(context).colorScheme.primary,
-              ),
+            left: 10.w,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    if (mogezatData.getAppName() == 'لمحـــة') {
+                      // Close the app
+                      SystemNavigator.pop();
+                    } else {
+                      mogezatData.setType('');
+                    }
+                  },
+                  icon: Icon(
+                    Icons.cancel_outlined,
+                    size: 30.sp / MediaQuery.textScaleFactorOf(context),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                Text(
+                  mogezatData.getAppName(),
+                  style: TextStyle(
+                    fontSize: 35.sp / MediaQuery.textScaleFactorOf(context),
+                    fontFamily: 'AeCortoba-wPVz',
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ],
             ),
           ),
           //the top bar languages button
@@ -198,70 +218,69 @@ class _MyHomePageState extends State<MyHomePage> {
             top: 30.h,
             right: 20.w,
             child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButton(
-                icon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      mogezatData.getLangsButtonTitle(),
-                      style: TextStyle(
-                        fontSize: mogezatData.getLangsButtonTitle() ==
-                            'languages'
-                            ? 20.sp /
-                            MediaQuery.textScaleFactorOf(context)
-                            : 30.sp /
-                            MediaQuery.textScaleFactorOf(context),
-                        fontFamily: 'AeCortoba-wPVz',
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Icon(
-                      Icons.language,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ],
-                ),
-                iconSize: 40.sp,
-                underline: Container(),
-                onChanged: (String? value) {
-                  mogezatData.setType(value!);
-                },
-                items: <String>[
-                  'العربيــة',
-                  'English  عربي',
-                  'chinese',
-                  'english',
-                  'french',
-                  'german',
-                  'italy',
-                  'indonesian',
-                  'russian',
-                  'filipino',
-                  'turkish'
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: SizedBox(
-                      // width: 100.w,
-                      child: Text(
-                        value,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButton(
+                  icon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        mogezatData.getLangsButtonTitle(),
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: mogezatData.getLangsButtonTitle() ==
+                                  'languages'
+                              ? 20.sp / MediaQuery.textScaleFactorOf(context)
+                              : 30.sp / MediaQuery.textScaleFactorOf(context),
                           fontFamily: 'AeCortoba-wPVz',
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Icon(
+                        Icons.language,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ],
+                  ),
+                  iconSize: 40.sp,
+                  underline: Container(),
+                  onChanged: (String? value) {
+                    mogezatData.setType(value!);
+                  },
+                  items: <String>[
+                    'العربيــة',
+                    'English  عربي',
+                    'chinese',
+                    'english',
+                    'french',
+                    'german',
+                    'italy',
+                    'indonesian',
+                    'russian',
+                    'filipino',
+                    'turkish'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: SizedBox(
+                        // width: 100.w,
+                        child: Text(
+                          value,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'AeCortoba-wPVz',
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
       // drawer: myDrawer(_pageController),

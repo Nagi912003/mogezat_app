@@ -118,7 +118,7 @@ class Mogezat with ChangeNotifier {
 
   get items => [..._items];
 
-  List getItems (){
+  List getItems() {
     type = box.get('type', defaultValue: '');
     if(type == 'English  عربي'){
       return ar_en;
@@ -187,8 +187,6 @@ class Mogezat with ChangeNotifier {
 
     return appNames[type] ?? 'لغات';
   }
-
-
   String getSharePhotoButtonTitle() {
     Map<String, String> buttonTitles = {
       'العربية': 'مشاركة الصورة',
