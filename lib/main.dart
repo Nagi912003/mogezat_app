@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
                 // brightness: Brightness.dark,
                 colorScheme: ColorScheme.fromSwatch(
                   primarySwatch: Colors.green,
-                  primaryColorDark: Colors.green[700],
+                  // primaryColorDark: Colors.green[700],
                   accentColor: Colors.yellow[800],
                   backgroundColor: Colors.green[50],
                   cardColor: Colors.green[50],
@@ -125,7 +125,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final mogezatData = Provider.of<Mogezat>(context, listen: false);
     return Scaffold(
-      // appBar: myAppBar(' ', null),
       body: Stack(
         children: [
           myBackGround(context),
@@ -198,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   icon: Icon(
                     Icons.cancel_outlined,
-                    size: 30.sp / MediaQuery.textScaleFactorOf(context),
+                    size: 30.r / MediaQuery.textScaleFactorOf(context),
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
